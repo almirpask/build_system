@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dw1keuk1s6a2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dws44"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hey2n"]
+size = Vector3(1, 0.136973, 1)
+
+[node name="Cylinder" type="StaticBody3D"]
+collision_layer = 17
+collision_mask = 0
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.128983, 0, 0, 0, 1, 0, 0.0873165, 0)
+mesh = SubResource("BoxMesh_dws44")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.080516, 0)
+shape = SubResource("BoxShape3D_hey2n")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]

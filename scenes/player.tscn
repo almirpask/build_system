@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://ifci1kyan2g6"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_e0q72"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dwvgf"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_x2hnc"]
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_e0q72")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.955861, 0)
+shape = SubResource("CapsuleShape3D_dwvgf")
+
+[node name="CameraMount" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.74603)
+
+[node name="Camera" type="Camera3D" parent="CameraMount"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.43499, 0)
+
+[node name="RayCast" type="RayCast3D" parent="CameraMount/Camera"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+target_position = Vector3(0, -1, 5)
+collision_mask = 16
+hit_from_inside = true
+hit_back_faces = false
+debug_shape_thickness = 5
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_x2hnc")
