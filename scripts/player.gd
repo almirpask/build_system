@@ -12,7 +12,6 @@ const JUMP_VELOCITY = 4.5
 var preview_instance = null
 var build_mode = false
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var horizontal_sensitivity = 0.5
@@ -27,8 +26,8 @@ func _input(event):
 		camera_mount.rotate_x(-deg_to_rad(event.relative.y) * vertical_sensitivity)
 
 func _physics_process(delta):
-	if(ray_cast.get_collider()):
-		print(ray_cast.get_collider().global_position)
+	#if(ray_cast.get_collider()):
+		#print(ray_cast.get_collider().global_position)
 	if(Input.is_action_just_pressed("build_mode")):
 		if(build_mode && preview_instance != null): 
 			preview_instance.queue_free()
@@ -36,20 +35,22 @@ func _physics_process(delta):
 	if(build_mode):
 		if(preview_instance == null ):
 			preview_instance = cylinder.instantiate()
+			preview_instance.preview = true 
 			preview_instance.get_node("Collision").disabled  = true
 			preview_instance.get_node("Mesh").set_surface_override_material(0, texture_preview)
 			get_parent().add_child(preview_instance)
 		if(preview_instance != null):
-			preview_instance.global_position = ray_cast.get_collision_point()
+			if(preview_instance):
+				var scale = preview_instance.mesh.scale
+				preview_instance.global_position = ray_cast.get_collision_point() + ((scale/2) * ray_cast.get_collision_normal())
 			if(ray_cast.is_colliding()):
 				
-				if(Input.is_action_just_released("build")):
+				if(Input.is_action_just_released("build") && preview_instance.buildable):
+					preview_instance.preview = false
 					preview_instance.get_node("Mesh").set_surface_override_material(0, texture_wood)
 					preview_instance.get_node("Collision").disabled  = false		
 					preview_instance = null 
 			pass
-				
-		#print(ray_cast.get_collision_point( ))
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta

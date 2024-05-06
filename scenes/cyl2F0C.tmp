@@ -1,0 +1,61 @@
+[gd_scene load_steps=6 format=3 uid="uid://dw1keuk1s6a2"]
+
+[ext_resource type="Script" path="res://scenes/preview_object.gd" id="1_2de0p"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dws44"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hey2n"]
+size = Vector3(1, 0.136973, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1803d"]
+size = Vector3(1, 0.136963, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xtjpb"]
+size = Vector3(1, 0.141602, 1)
+
+[node name="Cylinder" type="StaticBody3D"]
+collision_layer = 17
+collision_mask = 0
+script = ExtResource("1_2de0p")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.128983, 0, 0, 0, 1, 0, 0.0873165, 0)
+mesh = SubResource("BoxMesh_dws44")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.080516, 0)
+shape = SubResource("BoxShape3D_hey2n")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="Collision" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0837329, 0)
+shape = SubResource("BoxShape3D_1803d")
+
+[node name="Backward" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.487938)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Backward"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0879303, 0.500269)
+shape = SubResource("BoxShape3D_xtjpb")
+
+[node name="Forward" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.48678)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Forward"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.482899)
+shape = SubResource("BoxShape3D_xtjpb")
+
+[node name="Right" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.01754, 0, -0.477861)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Right"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.482899)
+shape = SubResource("BoxShape3D_xtjpb")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="area_entered" from="Right" to="." method="_on_right_area_entered"]
+[connection signal="body_entered" from="Right" to="." method="_on_right_body_entered"]

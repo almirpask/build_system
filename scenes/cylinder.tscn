@@ -1,20 +1,38 @@
-[gd_scene load_steps=3 format=3 uid="uid://dw1keuk1s6a2"]
+[gd_scene load_steps=6 format=3 uid="uid://dw1keuk1s6a2"]
+
+[ext_resource type="Script" path="res://scenes/preview_object.gd" id="1_2de0p"]
+[ext_resource type="PackedScene" uid="uid://cv6qhdj1jxswd" path="res://scenes/BuildingSystem/SnapPoint.tscn" id="2_0ero0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_dws44"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hey2n"]
-size = Vector3(1, 0.136973, 1)
+size = Vector3(1, 0.1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1803d"]
+size = Vector3(1, 0.1, 1)
 
 [node name="Cylinder" type="StaticBody3D"]
 collision_layer = 17
 collision_mask = 0
+script = ExtResource("1_2de0p")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.128983, 0, 0, 0, 1, 0, 0.0873165, 0)
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_dws44")
 
 [node name="Collision" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.080516, 0)
 shape = SubResource("BoxShape3D_hey2n")
 
-[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="Collision" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_1803d")
+
+[node name="SnapPoint" parent="." instance=ExtResource("2_0ero0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.02144)
+
+[node name="SnapPoint2" parent="." instance=ExtResource("2_0ero0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.01292, 0, -0.0181693)
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
