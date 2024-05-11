@@ -23,16 +23,35 @@ mesh = SubResource("BoxMesh_dws44")
 [node name="Collision" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_hey2n")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="InnerArea" type="Area3D" parent="."]
 
-[node name="Collision" type="CollisionShape3D" parent="Area3D"]
+[node name="Collision" type="CollisionShape3D" parent="InnerArea"]
 shape = SubResource("BoxShape3D_1803d")
+disabled = true
 
 [node name="SnapPoint" parent="." instance=ExtResource("2_0ero0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.02144)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 2.08165e-12, 0.45)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SnapPoint"]
+size = Vector3(0.1, 0.1, 0.1)
 
 [node name="SnapPoint2" parent="." instance=ExtResource("2_0ero0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.01292, 0, -0.0181693)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 2.08165e-12, -0.45)
 
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[node name="CSGBox3D" type="CSGBox3D" parent="SnapPoint2"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="SnapPoint3" parent="." instance=ExtResource("2_0ero0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 2.08165e-12, -0.45)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SnapPoint3"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="SnapPoint4" parent="." instance=ExtResource("2_0ero0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 2.08165e-12, 0.45)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SnapPoint4"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[connection signal="body_entered" from="InnerArea" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="InnerArea" to="." method="_on_area_3d_body_exited"]

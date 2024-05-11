@@ -2,8 +2,8 @@ extends StaticBody3D
 class_name PreviewObject
 
 
-@onready var collision = $Collision
-@onready var mesh = $Mesh
+@onready var collision: CollisionShape3D = $Collision
+@onready var mesh: MeshInstance3D = $Mesh
 
 const BLOCKED = preload("res://material/blocked.tres")
 const PREVIEW = preload("res://material/preview.tres")
@@ -24,7 +24,6 @@ func _process(delta):
 	
 	if (current_snap_area && preview):
 		var delta_position = current_snap_area.global_transform.origin - mesh.global_transform.origin
-		move_preview(delta_position)
 		
 	pass
 
@@ -43,7 +42,7 @@ func _on_area_3d_body_exited(body):
 
 func move_preview(new_position: Vector3):
 	mesh.global_translate(new_position)
-	collision.global_translate(new_position)
+	#collision.global_translate(new_position)
 func reset_preview_position():
 	mesh.position =  Vector3.ZERO
 	collision.position =  Vector3.ZERO
