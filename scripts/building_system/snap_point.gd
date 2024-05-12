@@ -7,9 +7,11 @@ var in_use = false;
 func _on_area_entered(area: Area3D):
 	pass
 	if parent.preview:
-		print(area.name)
-		parent.collision
+		
+		parent.snap_position = parent.global_transform.origin
+		#print(area.name)
 		#parent.mesh.set_surface_override_material(0, parent.BLOCKED)
+		pass
 		
 	if in_use:
 		return false

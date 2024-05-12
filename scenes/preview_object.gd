@@ -13,9 +13,14 @@ var preview = false
 var buildable = true 
 var snap = false
 var current_snap_area: Area3D = null
+var snap_position = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	for i in range(get_child_count()):
+		var child = get_child(i)
+		#print(child.name)
+		
 	pass # Replace with function body.
 
 
@@ -23,8 +28,9 @@ func _ready():
 func _process(delta):
 	
 	if (current_snap_area && preview):
-		var delta_position = current_snap_area.global_transform.origin - mesh.global_transform.origin
-		
+		print(current_snap_area.name)
+		var delta_position = snap_position - mesh.global_transform.origin
+		move_preview(delta_position)
 	pass
 
 
