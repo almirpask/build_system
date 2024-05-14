@@ -14,7 +14,6 @@
 transform = Transform3D(9.73945, 0, 0, 0, 1, 0, 0, 0, 6.76344, 0, -1, 0)
 use_collision = true
 collision_layer = 17
-collision_mask = 17
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ij8gc")

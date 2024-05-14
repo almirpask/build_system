@@ -4,19 +4,24 @@ class_name PreviewObject
 
 @onready var collision: CollisionShape3D = $Collision
 @onready var mesh: MeshInstance3D = $Mesh
+@onready var label_3d = $Label3D
+@onready var label_3d_2 = $Label3D2
 
 const BLOCKED = preload("res://material/blocked.tres")
 const PREVIEW = preload("res://material/preview.tres")
-
+const STATIC_NAME = "PreviewObject"
 var collision_objects: Array[PreviewObject] = []
 var preview = false
 var buildable = true 
 var snap = false
 var current_snap_area: Area3D = null
-var snap_position = null
-
+var snap_position: Vector3 = Vector3.ZERO
+var current_body = null 
 # Called when the node enters the scene tree for the first time.
+
+
 func _ready():
+	label_3d.text = name
 	for i in range(get_child_count()):
 		var child = get_child(i)
 		#print(child.name)
@@ -26,11 +31,11 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	label_3d_2.text = str(mesh.global_transform.origin)
 	
-	if (current_snap_area && preview):
-		print(current_snap_area.name)
-		var delta_position = snap_position - mesh.global_transform.origin
-		move_preview(delta_position)
+	if (preview && current_body):
+		mesh.global_position = current_body.global_position -  snap_position
+		#print(current_body.global_position)
 	pass
 
 
@@ -48,8 +53,9 @@ func _on_area_3d_body_exited(body):
 
 func move_preview(new_position: Vector3):
 	mesh.global_translate(new_position)
-	#collision.global_translate(new_position)
 func reset_preview_position():
 	mesh.position =  Vector3.ZERO
 	collision.position =  Vector3.ZERO
+	
+	pass
 

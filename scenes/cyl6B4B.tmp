@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://dw1keuk1s6a2"]
+
+[ext_resource type="Script" path="res://scenes/preview_object.gd" id="1_2de0p"]
+[ext_resource type="PackedScene" uid="uid://cv6qhdj1jxswd" path="res://scenes/BuildingSystem/SnapPoint.tscn" id="2_0ero0"]
+[ext_resource type="Material" uid="uid://c8npfh4dqo623" path="res://material/wood.tres" id="3_iv027"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dws44"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hey2n"]
+size = Vector3(1, 0.1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1803d"]
+size = Vector3(1, 0.1, 1)
+
+[node name="Floor" type="StaticBody3D"]
+collision_layer = 17
+collision_mask = 0
+script = ExtResource("1_2de0p")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_dws44")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_hey2n")
+
+[node name="InnerArea" type="Area3D" parent="."]
+
+[node name="Collision" type="CollisionShape3D" parent="InnerArea"]
+shape = SubResource("BoxShape3D_1803d")
+disabled = true
+
+[node name="SnapPoint" parent="." instance=ExtResource("2_0ero0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 2.08165e-12, 0.45)
+snap_position = Vector3(1, 0, 1)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SnapPoint"]
+size = Vector3(0.1, 0.1, 0.1)
+material = ExtResource("3_iv027")
+
+[node name="SnapPoint2" parent="." instance=ExtResource("2_0ero0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 2.08165e-12, -0.45)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SnapPoint2"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="SnapPoint3" parent="." instance=ExtResource("2_0ero0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 2.08165e-12, -0.45)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SnapPoint3"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="SnapPoint4" parent="." instance=ExtResource("2_0ero0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 2.08165e-12, 0.45)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="SnapPoint4"]
+size = Vector3(0.1, 0.1, 0.1)
+
+[node name="Label3D" type="Label3D" parent="."]
+offset = Vector2(0, 10)
+modulate = Color(0.620488, 0, 0.11864, 1)
+text = "POSITION"
+
+[connection signal="body_entered" from="InnerArea" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="InnerArea" to="." method="_on_area_3d_body_exited"]

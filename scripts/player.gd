@@ -6,7 +6,7 @@ const JUMP_VELOCITY = 4.5
 @onready var camera_mount = $CameraMount
 
 @onready var ray_cast = $CameraMount/Camera/RayCast
-@onready var cylinder = preload("res://scenes/cylinder.tscn")
+@onready var floor = preload("res://scenes/floor.tscn")
 @onready var texture_wood = preload("res://material/wood.tres")
 @onready var texture_preview = preload("res://material/preview.tres")
 var preview_instance = null
@@ -26,15 +26,13 @@ func _input(event):
 		camera_mount.rotate_x(-deg_to_rad(event.relative.y) * vertical_sensitivity)
 
 func _physics_process(delta):
-	#if(ray_cast.get_collider()):
-		#print(ray_cast.get_collider().global_position)
 	if(Input.is_action_just_pressed("build_mode")):
 		if(build_mode && preview_instance != null): 
 			preview_instance.queue_free()
 		build_mode = !build_mode
 	if(build_mode):
 		if(preview_instance == null ):
-			preview_instance = cylinder.instantiate()
+			preview_instance = floor.instantiate()
 			preview_instance.preview = true 
 			preview_instance.get_node("Collision").disabled  = true
 			preview_instance.get_node("Mesh").set_surface_override_material(0, texture_preview)
@@ -44,7 +42,6 @@ func _physics_process(delta):
 				var scale = preview_instance.mesh.scale
 				preview_instance.global_position = ray_cast.get_collision_point() + ((scale/2) * ray_cast.get_collision_normal())
 			if(ray_cast.is_colliding()):
-				
 				if(Input.is_action_just_released("build") && preview_instance.buildable):
 					preview_instance.preview = false
 					preview_instance.get_node("Mesh").set_surface_override_material(0, texture_wood)
