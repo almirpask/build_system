@@ -43,6 +43,8 @@ func _physics_process(delta):
 				preview_instance.global_position = ray_cast.get_collision_point() + ((scale/2) * ray_cast.get_collision_normal())
 			if(ray_cast.is_colliding()):
 				if(Input.is_action_just_released("build") && preview_instance.buildable):
+					preview_instance.global_position = preview_instance.mesh.global_position
+					preview_instance.mesh.position = Vector3.ZERO
 					preview_instance.preview = false
 					preview_instance.get_node("Mesh").set_surface_override_material(0, texture_wood)
 					preview_instance.get_node("Collision").disabled  = false		

@@ -40,13 +40,15 @@ func _on_area_exited(area):
 
 
 func _on_body_entered(body):
-	print(name)
+	print(body.get_instance_id())
 	if "STATIC_NAME" in body:
 		#print(body.STATIC_NAME)
 		if body.STATIC_NAME == "PreviewObject":
 			#print(body.STATIC_NAME)
-			parent.snap_position = snap_position
-			parent.current_body = body
+			if parent.current_body != null && compare_ids(parent.current_body, body):
+				parent.snap_positions.append(snap_position)
+			if parent.current_body == null:
+				parent.current_body = body
 	pass
 
 
@@ -55,4 +57,15 @@ func _on_body_exited(body):
 	#parent.mesh.position =  Vector3.ZERO
 	#parent.snap_position = Vector3.ZERO
 	#parent.current_body = body
+	if "STATIC_NAME" in body:
+		#print(body.STATIC_NAME)
+		if body.STATIC_NAME == "PreviewObject":
+			#print(body.STATIC_NAME)
+			parent.snap_positions = parent.snap_positions.filter(func(vector) -> bool:
+				return vector != snap_position
+			)
+			parent.current_body = null
 	pass
+
+func compare_ids(instance1, instance2):
+	return instance1.get_instance_id() == instance2.get_instance_id()

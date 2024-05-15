@@ -17,6 +17,7 @@ var snap = false
 var current_snap_area: Area3D = null
 var snap_position: Vector3 = Vector3.ZERO
 var current_body = null 
+var snap_positions: Array[Vector3] = []
 # Called when the node enters the scene tree for the first time.
 
 
@@ -32,9 +33,10 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	label_3d_2.text = str(mesh.global_transform.origin)
-	
+	if snap_positions.size() == 0:
+		mesh.position = Vector3.ZERO
 	if (preview && current_body):
-		mesh.global_position = current_body.global_position -  snap_position
+		mesh.global_position = current_body.global_position -  vectors_avg(snap_positions)
 		#print(current_body.global_position)
 	pass
 
@@ -58,4 +60,13 @@ func reset_preview_position():
 	collision.position =  Vector3.ZERO
 	
 	pass
+	
+func sum_vectors(vectors: Array[Vector3]):
+	var sum = Vector3(0,0,0)
+	for vector in vectors:
+		sum += vector
+	return sum
+func vectors_avg(vectors: Array[Vector3]):
+	return sum_vectors(vectors) / vectors.size()
+	
 
